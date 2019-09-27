@@ -1,10 +1,11 @@
 package com.codeoftheweb.salvo;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 public class GamePlayer {
@@ -23,35 +24,63 @@ public class GamePlayer {
     @JoinColumn(name = "game_id")
     private Game game;
 
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+    private Set<Ship> ships  = new HashSet<>();
+
+
+    @OneToMany(mappedBy = "gamePlayer", fetch = FetchType.EAGER)
+    private Set<Salvo> salvoes = new HashSet<>();
+
     public GamePlayer() {
     }
 
-    public GamePlayer(Player player, Game game){
-        this.player=player;
+    public long getId() {
+        return id;
+    }
+
+    public GamePlayer(Date joinDate, Game game, Player player ){
+        this.joinDate=joinDate;
         this.game=game;
+        this.player=player;
+    }
+
+    public void addShip(Ship ship){
+
+        ship.setGamePlayer(this);
+        ships.add(ship);
     }
 
     public Date getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
+
+    public Set<Salvo> getSalvoes() {
+        return salvoes;
     }
 
+    public Set<Ship> getShips(){ return ships;}
+
+
+
+    @JsonIgnore
     public Game getGame() {
         return game;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
+    @JsonIgnore
     public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public Map<String, Object> getDto (){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", getId());
+        dto.put("player", getPlayer().getDto());
+        dto.put("score", getPlayer().getScores());
+
+        return dto;
     }
+
+
 }

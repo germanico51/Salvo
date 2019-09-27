@@ -4,8 +4,9 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 public class Game {
@@ -17,23 +18,38 @@ public class Game {
     private Date creationDate;
 
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
-    private List<GamePlayer> gamePlayers;
+    private Set<GamePlayer> gamePlayers;
+
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    Set<Score> scores;
 
     public Game(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Game (){
+    public Game (){this.creationDate = new Date(); }
 
+    public long getId() {
+        return id;
     }
 
     public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public Set<GamePlayer> getGamePlayers(){
+        return gamePlayers;
     }
+
+    public Map<String,Object> getDto(){
+        Map<String,Object> dto = new LinkedHashMap<>();
+        dto.put("id", getId());
+        dto.put("created", getCreationDate().getTime());
+        dto.put("gamePlayers", getGamePlayers().stream().map(gamePlayer -> gamePlayer.getDto()));
+
+        return dto;
+    }
+
 
 
 }

@@ -3,9 +3,13 @@ package com.codeoftheweb.salvo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Entity
 public class Player {
@@ -16,10 +20,19 @@ public class Player {
 
     private long id;
 
+    public long getId() {
+        return id;
+    }
+
     private String userName ;
 
     @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
-    private List<GamePlayer> gamePlayers;
+    private Set<GamePlayer> gamePlayers;
+
+    @OneToMany(mappedBy = "player", fetch = FetchType.EAGER)
+    Set<Score> scores;
+
+
 
     public Player(String userName) {
         this.userName = userName;
@@ -29,15 +42,61 @@ public class Player {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+
+    public Set<GamePlayer> getGames(){
+
+        return gamePlayers;
     }
 
-    public List<Game> getGames(){
-        return gamePlayers.stream().map(game -> game.getGame()).collect(toList());
+    public Set<Score> getScores() {
+        return scores;
     }
-
 
     public Player() { }
+
+    public Set<Score> getTied() {
+        return getScores()
+                .stream()
+                .filter(score -> score.getScore() == 0.5)
+                .collect(toSet());
+    }
+
+    public Set<Score> getLost() {
+        return getScores()
+                .stream()
+                .filter(score -> score.getScore() == 0)
+                .collect(toSet());
+    }
+
+    public Set<Score> getWon() {
+        return getScores()
+                .stream()
+                .filter(score -> score.getScore() == 1)
+                .collect(toSet());
+    }
+
+    public double getTotalScore() {
+        return getWon().size() + getTied().size() * 0.5;
+    }
+
+    public Map<String, Object> getLeaderboardDto() {
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id", getId());
+        dto.put("name", getUserName());
+        dto.put("total", getTotalScore());
+        dto.put("won", getWon().size());
+        dto.put("lost", getLost().size());
+        dto.put("tied", getTied().size());
+        return dto;
+    }
+
+
+    public Map<String, Object> getDto(){
+        Map<String, Object> dto = new LinkedHashMap<>();
+        dto.put("id",getId());
+        dto.put("userName", getUserName());
+
+        return dto;
+    }
 
    }
