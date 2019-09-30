@@ -31,9 +31,11 @@ public class Player {
     public long getId() {
         return id;
     }
+
     public String getPassword(){
         return password;
     }
+
     public Player(String userName) {
         this.userName = userName;
     }
@@ -59,7 +61,8 @@ public class Player {
     public Player() { }
 
     public Player(String userName, String password){
-        
+        this.userName=userName;
+        this.password=password;
 
     }
 

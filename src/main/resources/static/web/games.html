@@ -3,16 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Salvo!</title>
+
 </head>
 <body>
 <h1>Game List</h1>
 
 <ol id="gameList">
 
-
 </ol>
 
+<div class="container" id="app">
+    <table class="table table-bordered">
+        <thead >
+        <tr>
 
+            <th>Name</th>
+            <th>Total</th>
+            <th>Won</th>
+            <th>Lost</th>
+            <th>Tied</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(player, index) in players">
+
+            <td>{{player.name}}</td>
+            <td>{{player.total}}</td>
+            <td>{{player.won}}</td>
+            <td>{{player.lost}}</td>
+            <td>{{player.tied}}</td>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

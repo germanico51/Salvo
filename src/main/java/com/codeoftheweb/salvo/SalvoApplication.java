@@ -42,10 +42,10 @@ public class SalvoApplication extends SpringBootServletInitializer {
 	@Bean
 	public CommandLineRunner initData(PlayerRepository playerRepository, GameRepository gameRepository, GamePlayerRepository gameplayerRepository, ShipRepository shipRepository, SalvoRepository salvoRepository, ScoreRepository scoreRepository) {
 		return (args) -> {
-			Player player1 = new Player("j.bauer@ctu.gov","dasdas23");
-			Player player2 = new Player("c.obrian@ctu.gov","jp38dd");
-			Player player3 = new Player("kim_bauer@ctu.gov","sdakj7");
-			Player player4 = new Player("t.almeida@ctu.gov","32323");
+			Player player1 = new Player("j.bauer@ctu.gov",passwordEncoder().encode("123"));
+			Player player2 = new Player("c.obrian@ctu.gov","123");
+			Player player3 = new Player("kim_bauer@ctu.gov","123");
+			Player player4 = new Player("t.almeida@ctu.gov","123");
 			//Player player5=  new Player("jbcrodriguezsud@gmail.com");
 
 			Date date1 = new Date();
@@ -139,7 +139,7 @@ class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 		auth.userDetailsService(inputName-> {
 			Player player = PlayerRepository.findByUserName(inputName);
 			if (player != null) {
-				return new User(player.getUserName(), passwordEncoder.encode(player.getPassword()),
+				return new User(player.getUserName(),player.getPassword(),
 						AuthorityUtils.createAuthorityList("USER"));
 			} else {
 				throw new UsernameNotFoundException("Unknown user: " + inputName);
@@ -154,19 +154,10 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/web/games.html", "/api/games", "/api/login").permitAll()
-				.antMatchers("/rest/**").hasAuthority("ADMIN")
-				.antMatchers("/api/**", "/web/game.html**").hasAuthority("USER")
+				.antMatchers("/web/*","/api/games","/api/login","/api/leaderboard").permitAll()
+				.antMatchers("/api/**","/web/game.html**").hasAnyAuthority("USER")
+				.antMatchers("/rest/**").hasAnyAuthority("ADMIN")
 				.anyRequest().permitAll();
-
-		//.antMatchers("/admin/**").hasAuthority("ADMIN")
-	//					.antMatchers("/web/games.html").permitAll()
-	//			.antMatchers("/web/**").permitAll()
-	//			.antMatchers("/api/games").permitAll()
-	//			.antMatchers("/api/players").permitAll()
-		//		.antMatchers("/api/game_view/*").hasAuthority("USER")
-		//		.antMatchers("/rest").denyAll()
-		//		.anyRequest().permitAll();
 
 		http.formLogin()
 				.usernameParameter("username")

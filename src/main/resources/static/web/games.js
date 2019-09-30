@@ -1,3 +1,26 @@
+var app = new Vue ({
+    el:"#app",
+    data:{
+    players:[]
+    }
+})
+
+$(function () {
+  loadData();
+});
+
+function getParameterByName(name) {
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+function loadData() {
+  $.get('/api/leaderboard')
+  .done(function (data){ app.players = data; })
+  .fail(function (jqXHR, textStatus) {
+        alert('Failed: ' + textStatus);
+      });
+      }
+
 
 window.addEventListener('load', function () {
     $.get("/api/games")

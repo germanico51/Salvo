@@ -1,9 +1,3 @@
-var app = new Vue ({
-    el:"#app",
-    data:{
-    players:[]
-    }
-})
 
 $(function () {
   loadData();
@@ -13,14 +7,7 @@ function getParameterByName(name) {
   var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
   return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
-function loadData() {
-  $.get('/api/leaderboard/')
-  .done(function (data){ app.players = data; })
-  .fail(function (jqXHR, textStatus) {
-        alert('Failed: ' + textStatus);
-      });
-      }
-/*
+
 function loadData() {
   $.get('/api/game_view/' + getParameterByName('gp'))
     .done(function (data) {
@@ -74,4 +61,4 @@ function isHit(shipLocation,salvoes,playerId) {
       });
   });
   return hit;
-}*/
+}
