@@ -44,11 +44,6 @@ public class GamePlayer {
         this.player=player;
     }
 
-    public void addShip(Ship ship){
-
-        ship.setGamePlayer(this);
-        ships.add(ship);
-    }
 
     public Date getJoinDate() {
         return joinDate;

@@ -16,18 +16,17 @@ import static java.util.stream.Collectors.toSet;
 @RequestMapping("/api")
 public class SalvoController {
 
-    PasswordEncoder passwordEncoder;
 
     @Autowired
     private GameRepository gameRepository;
 
     @Autowired
     private GamePlayerRepository gamePlayerRepository;
-    
+
     @Autowired
     private PlayerRepository playerRepository;
-
- @RequestMapping(path = '/players' , method = RequestMethod.POST)
+/*
+  @RequestMapping(path = '/players' , method = RequestMethod.POST)
  public ResponseEntity<Object> register(
      @RequestParam String email, @RequestParam String password){
      if (email.isEmpty() || password.isEmpty() ) {
@@ -40,7 +39,7 @@ public class SalvoController {
 
      playerRepository.save(new Player(email, passwordEncoder.encode(password)));
      return new ResponseEntity<>(HttpStatus.CREATED);
- }
+ }*/
 
     @RequestMapping("/games")
     public List<Map<String, Object>> getGames(){

@@ -70,10 +70,7 @@ public class SalvoApplication extends SpringBootServletInitializer {
 			Ship s3 = new Ship("Patrol Boat", Arrays.asList("C3","C4"), gp1);
 			Ship s4 = new Ship("Destroyer", Arrays.asList("D3","D4","D2"),gp2);
 
-			gp1.addShip(s1);
-			gp1.addShip(s3);
-			gp2.addShip(s4);
-			gp2.addShip(s2);
+
 
 			// salvo juego 1 turno 1
 			List<String> salvoloc1 = Arrays.asList("B6","B4", "B5");
