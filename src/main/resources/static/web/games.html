@@ -10,9 +10,13 @@
 <body>
 <h1>Game List</h1>
 
-<ol id="gameList">
+<!--Table container-->
+<div style="text-align: center" class="table-responsive">
+    <table class="table table-striped" id="gameList">
 
-</ol>
+    </table>
+</div>
+
 
 <div class="container" id="app">
     <table class="table table-bordered">
@@ -39,8 +43,29 @@
         </tr>
         </tbody>
     </table>
-</div>
 
+
+    <div v-if="currentUser == 'Guest'">
+        <form id="login-form" onsubmit="return false" >
+            <label>Username: <input type="text" name="username"></label>
+    <label>Password: <input type="password" name="password"></label>
+    <button onclick="login()">LOGIN</button>
+
+</form>
+        <form id="register-form" onsubmit="return false" class="d-flex flex-column w-25">
+            <label>Username: <input type="email" name="username" required></label>
+            <label>Password: <input type="password" name="password" required></label>
+            <label>password2: <input type="password" name="password2" required></label>
+            <button onclick="register()">Register</button>
+        </form>
+    </div>
+
+<form id="logout-form" onsubmit="return false" v-else>
+    <button onclick="logout()">Log out</button>
+</form>
+
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
