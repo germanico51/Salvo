@@ -60,8 +60,8 @@ public class Player {
 
     public Player() { }
 
-    public Player(String userName, String password){
-        this.userName=userName;
+    public Player(String email, String password){
+        this.userName=email;
         this.password=password;
 
     }

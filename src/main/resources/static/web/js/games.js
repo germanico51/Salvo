@@ -33,7 +33,7 @@ var gameList = document.getElementById("gameList");
 
 function loadGameList(games){
     var list = "";
-    games.forEach(g => {
+    games.games.forEach(g => {
               list +='<li>';
               list +=new Date(g.created).toLocaleString();
               list += ' ' + g.gamePlayers.map(gp => gp.player.email).join(', ');
