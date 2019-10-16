@@ -1,15 +1,15 @@
 var app = new Vue ({
     el:"#app",
     data:{
-    players:[],
     games: [],
-    currentUser: ""
+    players:[],
+    user: ""
     }
 })
 
 $(function () {
   loadData();
-    cargarUsuario();
+  getUser();
 });
 
 function getParameterByName(name) {
@@ -49,45 +49,30 @@ function loadGameList(games){
 
     gameList.innerHTML= table;
     }
-function cargarUsuario() {
+function getUser() {
   $.get("/api/games")
     .done(function (data) {
-      app.games = data.games;
-      app.currentUser = data.player.email;
+
+      app.user = data.player.email;
       console.log(data.player.email)
     })
     .fail(function (jqXHR, textStatus) {
       alert('Failed: ' + textStatus);
     })
 }
-
-function register(){
-    var form = document.getElementById("register-form");
-    $.post("/api/players", {
-        email: form["username"].value,
-        password: form["password"].value
-    })
-    .done(function () {
-            alert('Success');
-          })
-    .fail(function (jqXHR, textStatus) {
-            alert('Failed: ' + jqXHR.status);
-          });
-}
-
  function login() {
-      if (app.currentUser == "Guest") {
+      if (app.user == "Guest") {
          var form = document.getElementById('login-form')
+         let user = form["username"].value;
+         let pass = form["password"].value;
          $.post("/api/login", {
-             username: form["username"].value,
-             password: form["password"].value
+             username:user,
+             password:pass
            })
-           .done(setTimeout(function(){ cargarUsuario(); }, 1000))
+           .done(setTimeout(function(){ getUser(); }, 1000))
            .fail(function (jqXHR, textStatus) {
              alert('Failed: ' + jqXHR.status);
            });
-       } else {
-         console.log("Ya existe un usuario")
        }
      }
 
@@ -98,3 +83,21 @@ function logout() {
       alert('Failed: ' + textStatus);
     });
 }
+
+function signUp(){
+    var form = document.getElementById("register-form");
+     let user = form["username"].value;
+     let pass = form["password"].value;
+
+    $.post("/api/players", {
+        email: user,
+        password: pass
+    }).done(function () {
+            alert('Success');
+            location.reload();
+          })
+    .fail(function (jqXHR, textStatus) {
+            alert('Failed: ' + jqXHR.status);
+          });
+}
+
