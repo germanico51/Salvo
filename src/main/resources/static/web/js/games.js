@@ -1,7 +1,6 @@
 var app = new Vue ({
     el:"#app",
     data:{
-    games: [],
     players:[],
     user: ""
     }
@@ -24,7 +23,6 @@ function loadData() {
       });
       }
 
-
 window.addEventListener('load', function () {
     $.get("/api/games")
     .done(function (games) {
@@ -41,8 +39,8 @@ function loadGameList(games){
     games.games.forEach (g => {
     table += '<tr>';
    table += '<td>'+ new Date(g.created).toLocaleString()+'</td>';
-    table += '<td>'+g.gamePlayers[0].player.userName+'</td>';
-    table += '<td>'+g.gamePlayers[1].player.userName+'</td>';
+    table += '<td>'+g.gamePlayers[0].player.email+'</td>';
+    table += '<td>'+g.gamePlayers[1].player.email+'</td>';
 
     });
     table +='</tbody>';
@@ -69,7 +67,7 @@ function getUser() {
              username:user,
              password:pass
            })
-           .done(setTimeout(function(){ getUser(); }, 1000))
+           .done((function(){ getUser(); }))
            .fail(function (jqXHR, textStatus) {
              alert('Failed: ' + jqXHR.status);
            });
@@ -88,16 +86,31 @@ function signUp(){
     var form = document.getElementById("register-form");
      let user = form["username"].value;
      let pass = form["password"].value;
-
+     let pass2 = form["password2"].value;
+    if(pass==pass2)
+    {
     $.post("/api/players", {
         email: user,
-        password: pass
-    }).done(function () {
+        password: pass,
+        password2: pass2
+
+    })
+
+    .done(function () {
             alert('Success');
             location.reload();
           })
+
+
+
     .fail(function (jqXHR, textStatus) {
             alert('Failed: ' + jqXHR.status);
           });
 }
+else
+{
+  
+}
+}
+
 
