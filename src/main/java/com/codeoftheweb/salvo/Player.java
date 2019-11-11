@@ -60,8 +60,8 @@ public class Player {
 
     public Player() { }
 
-    public Player(String email, String password){
-        this.userName=email;
+    public Player(String userName, String password){
+        this.userName=userName;
         this.password=password;
 
     }
@@ -106,7 +106,7 @@ public class Player {
     public Map<String, Object> getDto(){
         Map<String, Object> dto = new LinkedHashMap<>();
         dto.put("id",getId());
-        dto.put("email", getUserName());
+        dto.put("username", getUserName());
 
         return dto;
     }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -33,6 +34,10 @@ public class Game {
         return id;
     }
 
+    public Set<Score> getScores() {
+        return scores;
+    }
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -46,10 +51,12 @@ public class Game {
         dto.put("id", getId());
         dto.put("created", getCreationDate().getTime());
         dto.put("gamePlayers", getGamePlayers().stream().map(gamePlayer -> gamePlayer.getDto()));
-
+        dto.put("score", this.getAllScores(getScores()));
         return dto;
     }
-
+    private List<Map<String, Object>>getAllScores(Set<Score> scores) {
+        return scores.stream().map(Score -> Score.getDto()).collect(Collectors.toList());
+    }
 
 
 }

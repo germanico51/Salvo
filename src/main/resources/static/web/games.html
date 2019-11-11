@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body>
-<div class="container" id="app">
+<div  id="app">
 
     <div style="display: flex; justify-content: flex-end" v-if="user == 'Guest'">
 <form class="form-inline" id="login-form" onsubmit="return false">
@@ -34,7 +34,8 @@
 
 </div>
     <form id="logout-form" onsubmit="return false" v-else>
-        <button  class="float-sm-right" onclick="logout()">Log out</button>
+        <button  class="float-sm-right btn btn-primary btn-lg" onclick="logout()" >Log out</button>
+        <center><button  onclick="createGame()" class="btn btn-primary btn-lg">Create Game</button></center>
     </form>
 
 <h1 align="center">Game List</h1>
@@ -71,36 +72,24 @@
         </tbody>
     </table>
 
-  <center> <div  v-if="user == 'Guest'">
+    <div style="display: flex; flex-direction: column  " v-if="user == 'Guest'">
+       <br><br><h2>Registro</h2><br>
 
-    <div class="container">
-        <form id="register-form" onsubmit="return false">
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" name="username" placeholder="Email">
-                </div>
+        <form class="form-inline" id="register-form" onsubmit="return false">
+            <label class="sr-only" for="inlineFormInput">Username</label>
+            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput2" name="username" placeholder="Username">
+
+            <label class="sr-only" for="inlineFormInputGroup">Username</label>
+            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+
+                <input type="password" class="form-control" id="inlineFormInputGroup2" name="password" placeholder="Password">
             </div>
-            <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword3"name="password" placeholder="Password">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Repeat Password</label>
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword4"name="password2" placeholder="Password">
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="offset-sm-2 col-sm-10">
-                    <button type="submit" onclick="signUp()" class="btn btn-primary">Sign up</button>
-                </div>
-            </div>
+
+            <button type="submit" onclick="signUp()"  class="btn btn-primary">Registrar</button>
         </form>
-</div>
+        <br>
       </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="js/jquery-3.3.1.min.js"></script>
