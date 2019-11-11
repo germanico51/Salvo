@@ -33,6 +33,9 @@ public class SalvoController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ShipRepository shipRepository;
+
   @RequestMapping(path = "/players", method = RequestMethod.POST)
  public ResponseEntity<Object> register(
      @RequestParam String username, @RequestParam String password){
@@ -155,6 +158,30 @@ public class SalvoController {
         }
     }
 
+    @RequestMapping(path="/games/players/{gpId}/ships", method = RequestMethod.POST)
+    public ResponseEntity <Map<String,Object>> addShips (@PathVariable Long gpId, Authentication authentication,@RequestBody List<Ship> ships) {
+      if (isGuest(authentication)) {
+        return new ResponseEntity<>(makeMap("Error", "Debe estar logueado"), HttpStatus.UNAUTHORIZED);
+      }
+
+      Player player = playerRepository.findByUserName(authentication.getName());
+
+      GamePlayer gamePlayer = gamePlayerRepository.findById(gpId).orElse(null);
+      if(gamePlayer.getPlayer().getId()!=player.getId())
+      {
+        return new ResponseEntity<>(makeMap("Error", "Id del gameplayer no coincide"), HttpStatus.UNAUTHORIZED);
+
+      }
+      if (!gamePlayer.getShips().isEmpty()) {
+        return new ResponseEntity<>(makeMap("Error", "Los ships ya fueron colocados"), HttpStatus.FORBIDDEN);
+      }
+      ships.stream().map(ship -> {ship.setGamePlayer(gamePlayer);
+      return shipRepository.save(ship);}).collect(Collectors.toList());
+
+      return new ResponseEntity<>(makeMap("ships correctos", " "), HttpStatus.CREATED);
+
+    }
+
     private List<Map<String, Object>> getShipList(Set<Ship> ships) {
          return ships
                 .stream()
@@ -167,5 +194,7 @@ public class SalvoController {
         map.put(key, value);
         return map;
     }
+
+
 
 }
