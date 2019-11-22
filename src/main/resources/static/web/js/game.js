@@ -51,6 +51,7 @@ function loadData() {
     });
 }
 
+
 function isHit(shipLocation,salvoes,playerId) {
   var hit = 0;
   salvoes.forEach(function (salvo) {
