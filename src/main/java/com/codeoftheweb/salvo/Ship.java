@@ -36,6 +36,11 @@ public class    Ship {
         this.locations=locations;
         this.gamePlayer=gamePlayer;
     }
+    public Ship (String shipType, List<String> locations ) {
+        this.shipType=shipType;
+        this.locations=locations;
+
+    }
 
     public String getShipType() {
         return shipType;
@@ -45,7 +50,7 @@ public class    Ship {
         return locations;
     }
 
-    @JsonIgnore
+
     public GamePlayer getGamePlayer() {
         return gamePlayer;
     }

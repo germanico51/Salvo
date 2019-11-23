@@ -244,53 +244,6 @@ const listenBusyCells = function(id){
         }
     }
 }
-function getParameterByName(name) {
-    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-};
 
-const obtenerPosicion = function (shipType) {
-    var ship = new Object();
-    ship["name"] = $("#" + shipType).attr('id');
-    ship["x"] = $("#" + shipType).attr('data-gs-x');
-    ship["y"] = $("#" + shipType).attr('data-gs-y');
-    ship["width"] = $("#" + shipType).attr('data-gs-width');
-    ship["height"] = $("#" + shipType).attr('data-gs-height');
-    ship["positions"] = [];
-    if (ship.height == 1) {
-        for (i = 1; i <= ship.width; i++) {
-            ship.positions.push(String.fromCharCode(parseInt(ship.y) + 65) + (parseInt(ship.x) + i))
-        }
-    } else {
-        for (i = 0; i < ship.height; i++) {
-            ship.positions.push(String.fromCharCode(parseInt(ship.y) + 65 + i) + (parseInt(ship.x) + 1))
-        }
-    }
-    var objShip = new Object();
-    objShip["type"] = ship.name;
-    objShip["shipLocations"] = ship.positions;
-    return objShip;
-}
-function addShips() {
-    var carrier = obtenerPosicion("carrier")
-    var patrol = obtenerPosicion("patrol_boat")
-    var battleship = obtenerPosicion("battleship")
-    var submarine = obtenerPosicion("submarine")
-    var destroyer = obtenerPosicion("destroyer")
 
-    $.post({
-            url: "/api/games/players/" + getParameterByName('gp') + "/ships",
-            data: JSON.stringify([carrier, patrol, battleship, submarine, destroyer]),
-            dataType: "text",
-            contentType: "application/json"
-        })
-        .done(function (response, status, jqXHR) {
-            console.log("ships guardados: " + response);
-            setTimeout(function () {
-               window.location.href = '/web/game.html?gp='+getParameterByName('gp');
-            }, 2000);
-        })
-        .fail(function (jqXHR, textStatus, httpError) {
-            console.log("shisps no guardados: " + textStatus + " " + httpError);
-        })
-}
+

@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Ships locations!</title>
+    <link rel="stylesheet" href="dist/normalize.css" />
+    <link rel="stylesheet" href="dist/gridstack.css" />
+    <link rel="stylesheet" href="dist/gridstack-extra.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
@@ -10,10 +15,20 @@
 </head>
 <body>
 
+
 <div class="container">
     <div>
         <span id="playerInfo"></span>
     </div>
+    <section>
+        <div id="agregaBarcos">
+            <h2> Place your ships</h2>
+            <div class="grid-ships">
+                <div id="grid" class="grid-stack grid-stack-10">
+                </div>
+            </div>
+            <button class="" onclick="addShips()"> Save your Location </button>
+        </div>
     <div class="row">
         <div class="col">
             <section>
@@ -149,6 +164,14 @@
 
 <script src="js/jquery-3.3.1.min.js"></script>
 
+<script src="dist/jquery-3.4.1.min.js"></script>
+<script src="dist/lodash.min.js"></script>
+<script src="dist/jquery-ui.min.js"></script>
+<script src="dist/gridstack.js"></script>
+<script src="dist/gridstack.jQueryUI.js"></script>
+<script src="dist/jquery.ui.touch-punch.min.js"></script>
+
+<script src="scripts/main.js"></script>
 <script src="./js/game.js"></script>
 </body>
 </html>
