@@ -28,6 +28,8 @@
     </div>
 
     <button type="submit" onclick="login()"  class="btn btn-primary">Log in</button>
+    <b></b>
+    <button type="submit" onclick="signUp()"  class="btn btn-danger">Registrar</button>
 </form>
 
 
@@ -50,18 +52,15 @@
     <table class="table table-bordered">
         <thead >
         <tr>
-
             <th>Name</th>
             <th>Total</th>
             <th>Won</th>
             <th>Lost</th>
             <th>Tied</th>
-
         </tr>
         </thead>
         <tbody>
         <tr v-for="(player, index) in players">
-
             <td>{{player.name}}</td>
             <td>{{player.total}}</td>
             <td>{{player.won}}</td>
@@ -72,24 +71,7 @@
         </tbody>
     </table>
 
-    <div style="display: flex; flex-direction: column  " v-if="user == 'Guest'">
-       <br><br><h2>Registro</h2><br>
 
-        <form class="form-inline" id="register-form" onsubmit="return false">
-            <label class="sr-only" for="inlineFormInput">Username</label>
-            <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput2" name="username" placeholder="Username">
-
-            <label class="sr-only" for="inlineFormInputGroup">Username</label>
-            <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-
-                <input type="password" class="form-control" id="inlineFormInputGroup2" name="password" placeholder="Password">
-            </div>
-
-            <button type="submit" onclick="signUp()"  class="btn btn-primary">Registrar</button>
-        </form>
-        <br>
-      </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="js/jquery-3.3.1.min.js"></script>

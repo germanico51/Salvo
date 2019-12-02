@@ -89,7 +89,7 @@ function logout() {
 }
 
 function signUp(){
-    var form = document.getElementById("register-form");
+    var form = document.getElementById("login-form");
      let user = form["username"].value;
      let pass = form["password"].value;
     $.post("/api/players", {

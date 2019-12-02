@@ -1,3 +1,9 @@
+body {
+ //background-image: url("https://www.ubackground.com/_ph/83/354001419.jpg");
+
+ background-color: #cccccc;
+  background-size: cover
+}
 .ship-piece{
     background-color: darkslateblue;
 }
@@ -9,3 +15,34 @@
 .salvo{
     background-color: crimson;
 }
+
+.cellBorder{
+    border: solid 2px lightblue ;
+    width: 5%;
+
+    text-align: center;
+    color: blue;
+    font-size: 20px;
+}
+
+.hide{
+    display: hide;
+}
+
+.wrap{
+    display: flex;
+    justify-content: space-between;
+}
+
+.hit-cell{
+    border: 1px solid black;
+
+}
+
+.gridContainer {
+    /* display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; */
+    justify-content: space-evenly;
+    /* text-align: center; */
+  }

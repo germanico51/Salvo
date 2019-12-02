@@ -1,6 +1,7 @@
 
 $(function () {
-  loadData();
+loadData();
+
 });
 
 function getParameterByName(name) {
@@ -24,12 +25,12 @@ function loadData() {
                 playerInfo = data.gamePlayers[0].player.username;
                 console.log(playerInfo);
 
-                $('#playerInfo').text(playerInfo + '(you) vs "Esperando Jugador"')
+                $('#playerInfo').text(playerInfo + '(you) vs "Waiting player...."')
               };
 
       data.ships.forEach(function (shipPiece) {
         shipPiece.shipLocations.forEach(function (shipLocation) {
-         $('#B_' + shipLocation).addClass('ship-piece');
+         $('#ships' + shipLocation.toLowerCase()).addClass('ship-piece');
           let turnHitted = isHit(shipLocation,data.salvoes,playerInfo[0].id)
           if(turnHitted >0){
             $('#B_' + shipLocation).addClass('ship-piece-hited');
@@ -40,12 +41,22 @@ function loadData() {
             $('#B_' + shipLocation).addClass('ship-piece');
         });
       });
+       if (data.ships.length > 0) {
+             drawTable("ships");
+              drawTable("salvos");
+              $("#addShips").hide();
+            } else {
+              $("#addShips").show();
+              $("#gameBoard").hide();
+
+            };
+
       data.salvoes.forEach(function (salvo) {
         console.log(salvo);
         if (playerInfo[0].id === salvo.player) {
           salvo.salvoLocations.forEach(function (location) {
 
-            $('#S_' + location).addClass('salvo');
+            $('#salvos' + location.toLowerCase()).addClass('salvo');
           });
         } else {
           salvo.salvoLocations.forEach(function (location) {
@@ -59,6 +70,47 @@ function loadData() {
     });
 }
 
+function drawTable(id) {
+
+  var tabla = document.createElement("table");
+  tabla.classList.add("table");
+  var tblBody = document.createElement("tbody");
+  for (var i = 0; i < 11; i++) {
+
+    var columns = document.createElement("tr");
+    for (var j = 0; j <= 10; j++) {
+
+      var cell = document.createElement("td");
+      if (i === 0) {
+        var columnText = document.createTextNode(j)
+        cell.appendChild(columnText);
+      };
+      if (j === 0) {
+        var rowText = document.createTextNode(String.fromCharCode(i + 64));
+        cell.appendChild(rowText);
+      };
+
+      if (j === 0 && i === 0) {
+        cell.textContent = "";
+      }
+      columns.appendChild(cell);
+
+
+      cell.id = id + String.fromCharCode(i + 64).toLowerCase() + j;
+
+      cell.classList.add("cellBorder");
+
+    }
+
+    tblBody.appendChild(columns);
+
+
+    tabla.appendChild(tblBody);
+    document.getElementById(id).append(tabla);
+    document.getElementById(id).append(tblBody);
+
+  }
+}
 
 function isHit(shipLocation,salvoes,playerId) {
   var hit = 0;
