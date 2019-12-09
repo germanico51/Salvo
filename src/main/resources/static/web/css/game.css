@@ -25,9 +25,12 @@ body {
     font-size: 20px;
 }
 
-.hide{
-    display: hide;
+
+.visible{
+     display: none;
 }
+
+
 
 .wrap{
     display: flex;

@@ -38,6 +38,12 @@ public class Salvo {
         return gamePlayer;
     }
 
+    public void setGamePlayer(GamePlayer gamePlayer){this.gamePlayer=gamePlayer;}
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
 
     public int getTurn() {
         return turn;

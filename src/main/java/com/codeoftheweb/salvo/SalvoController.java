@@ -36,6 +36,9 @@ public class SalvoController {
     @Autowired
     private ShipRepository shipRepository;
 
+    @Autowired
+    private SalvoRepository salvoRepository;
+
   @RequestMapping(path = "/players", method = RequestMethod.POST)
  public ResponseEntity<Object> register(
      @RequestParam String username, @RequestParam String password){
@@ -178,9 +181,47 @@ public class SalvoController {
       ships.stream().map(ship -> {ship.setGamePlayer(gamePlayer);
       return shipRepository.save(ship);}).collect(Collectors.toList());
 
-      return new ResponseEntity<>(makeMap("ships correctos", " "), HttpStatus.CREATED);
+      return new ResponseEntity<>(makeMap("ships correctos","Success"), HttpStatus.CREATED);
 
     }
+    @RequestMapping(value = "/games/players/{gpId}/salvoes", method = RequestMethod.POST)
+    public ResponseEntity<Map> addSalvo(@PathVariable long gpId, @RequestBody Salvo salvo, Authentication authentication) {
+
+        if (isGuest(authentication)) {
+            return new ResponseEntity<>(makeMap("Error", "No esta autorizado "), HttpStatus.UNAUTHORIZED);
+        }
+
+        GamePlayer gamePlayer = gamePlayerRepository.findById(gpId).orElse(null);
+        Player player = playerRepository.findByUserName(authentication.getName());
+
+        if (gamePlayer.getPlayer().getId() != player.getId()) {
+            return new ResponseEntity<>(makeMap("Error", "no es tu partida"), HttpStatus.FORBIDDEN);
+        }
+
+        if (gamePlayer == null) {
+            return new ResponseEntity<>(makeMap("Error", "no autorizado"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (salvo.getSalvoLocations().size() > 5){
+            return new ResponseEntity<>(makeMap("Error", "No se pueden mandar mas de 5 salvos"), HttpStatus.UNAUTHORIZED);
+        }
+
+        if (gamePlayer.getShips().isEmpty()) {
+            return new ResponseEntity<>(makeMap("Error", "no hay barcos"), HttpStatus.UNAUTHORIZED);
+        }else {
+
+            salvo.setTurn(gamePlayer.getSalvoes().size() + 1);
+            salvo.setGamePlayer(gamePlayer);
+            salvoRepository.save(salvo);
+            return new ResponseEntity<>(makeMap("ok", "Salvo Añadido"), HttpStatus.CREATED);
+
+        }
+
+
+
+    }
+
+
 
     private List<Map<String, Object>> getShipList(Set<Ship> ships) {
          return ships

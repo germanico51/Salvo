@@ -1,6 +1,10 @@
 
 $(function () {
+
 loadData();
+
+drawTable("ships");
+drawTable("salvos");
 
 });
 
@@ -12,7 +16,6 @@ function getParameterByName(name) {
 function loadData() {
   $.get('/api/game_view/' + getParameterByName('gp'))
     .done(function (data) {
-      console.log(data);
       var playerInfo;
       if (data.gamePlayers.length == 2) {
       if (data.gamePlayers[0].id == getParameterByName('gp'))
@@ -31,39 +34,18 @@ function loadData() {
       data.ships.forEach(function (shipPiece) {
         shipPiece.shipLocations.forEach(function (shipLocation) {
          $('#ships' + shipLocation.toLowerCase()).addClass('ship-piece');
-          let turnHitted = isHit(shipLocation,data.salvoes,playerInfo[0].id)
-          if(turnHitted >0){
-            $('#B_' + shipLocation).addClass('ship-piece-hited');
-            $('#B_' + shipLocation).text(turnHitted);
 
-          }
-          else
-            $('#B_' + shipLocation).addClass('ship-piece');
         });
       });
        if (data.ships.length > 0) {
-             drawTable("ships");
-              drawTable("salvos");
-              $("#addShips").hide();
+
+              $("#mostrarBarcos").hide();
             } else {
-              $("#addShips").show();
+
+              $("#ships").hide();
+              $("#salvos").hide();
               $("#gameBoard").hide();
-
-            };
-
-      data.salvoes.forEach(function (salvo) {
-        console.log(salvo);
-        if (playerInfo[0].id === salvo.player) {
-          salvo.salvoLocations.forEach(function (location) {
-
-            $('#salvos' + location.toLowerCase()).addClass('salvo');
-          });
-        } else {
-          salvo.salvoLocations.forEach(function (location) {
-            $('#_' + location).addClass('salvo');
-          });
-        }
-      });
+            }
     })
     .fail(function (jqXHR, textStatus) {
       alert('Failed: ' + textStatus);
@@ -95,7 +77,6 @@ function drawTable(id) {
       }
       columns.appendChild(cell);
 
-
       cell.id = id + String.fromCharCode(i + 64).toLowerCase() + j;
 
       cell.classList.add("cellBorder");
@@ -112,17 +93,6 @@ function drawTable(id) {
   }
 }
 
-function isHit(shipLocation,salvoes,playerId) {
-  var hit = 0;
-  salvoes.forEach(function (salvo) {
-    if(salvo.player != playerId)
-      salvo.salvoLocations.forEach(function (location) {
-        if(shipLocation === location)
-          hit = salvo.turn;
-      });
-  });
-  return hit;
-}
 const obtenerPosicion = function (shipType) {
     var ship = new Object();
     ship["name"] = $("#" + shipType).attr('id');
@@ -151,8 +121,7 @@ function addShips() {
     var battleship = obtenerPosicion("battleship")
     var submarine = obtenerPosicion("submarine")
     var destroyer = obtenerPosicion("destroyer")
-      console.log(carrier);
-         console.log(getParameterByName('gp'));
+
     $.post({
             url: "/api/games/players/" + getParameterByName('gp') + "/ships",
             data: JSON.stringify([carrier, patrol, battleship, submarine, destroyer]),
@@ -162,7 +131,7 @@ function addShips() {
         .done(function (response, status, jqXHR) {
             alert("ships guardados: " + response);
             setTimeout(function () {
-               window.location.href = '/web/game.html?gp='+getParameterByName('gp');
+                 window.location.href = '/web/game.html?gp='+getParameterByName('gp');
             }, 2000);
         })
         .fail(function (jqXHR, textStatus, httpError) {
