@@ -1,79 +1,76 @@
-    <!DOCTYPE html>
-<html lang="en">
+<!-- html de prueba para probar gridstack -->
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Ships locations!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="dist/normalize.css" />
     <link rel="stylesheet" href="dist/gridstack.css" />
     <link rel="stylesheet" href="dist/gridstack-extra.css" />
     <link rel="stylesheet" href="styles/style.css" />
 
+
     <link rel="stylesheet" type="text/css" href="css/game.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-
 </head>
 <body>
 
-<div class="container-fluid " >
+<button class="btn btn-success" onclick="window.location.href = 'games.html'">
+    Games List
+</button>
+<header>
+
+    <h2 class=" text-center " style="height: 100px;">
+        <div>
+            <span id="playerInfo"></span>
+        </div>
+    </h2>
+
+</header>
+<div  id="mostrarBarcos">
+    <h2 class="text-center"> Place your ships</h2>
+    <div class="grid-ships">
+
+        <div id="grid" class="grid-stack grid-stack-10">
+
+        </div>
+
+    </div>
+    <small id="alert-text"></small>
     <div>
-        <button class="btn btn-success" onclick="window.location.href = 'games.html'">
-            Games List
-        </button>
+        <button class="btn btn-success " style="position:absolute; top:40%; left:20%;"  onclick="addShips()">Add ships</button>
     </div>
-<div class="container  ">
-
-    <header class="container ">
-
-        <h2 class=" text-center " style="height: 100px;">
-            <div>
-                <span id="playerInfo"></span>
-            </div>
-        </h2>
-
-    </header>
-
-    <section>
-        <div id="mostrarBarcos">
-            <h2 class="text-center"> Place your ships</h2>
-            <div class="grid-ships">
-                <div id="grid" class="grid-stack grid-stack-10">
-                </div>
-            </div>
-            <button class="btn btn-success " onclick="addShips()"> Save your Location </button>
-        </div>
-        <div id="gameBoard" class="container">
-            <div class="row justify-content-center">
-                <div class="col-4"><h2>Game Board</h2></div>
-                <div class="col-4"><h2>Salvo Board</h2></div>
-            </div>
-        </div>
+</div>
+<div id="gameBoard" class="container">
+    <div class="row justify-content-center">
+        <div class="col-4"><h2>Game Board</h2></div>
+        <div class="col-4"><h2>Salvo Board</h2></div>
+    </div>
+</div>
 
 
-        <div class="wrap col-12 justify-content-center">
+<div class="wrap col-12 justify-content-center">
 
-            <div id="ships" class=" col-4  m-2">
-            </div>
-
-            <div id="salvos" class=" col-4 table-responsive m-2">
-            </div>
-        </div>
-    </section>
-
-        </div>
+    <div id="ships" class=" col-4  m-2">
     </div>
 
+    <div id="salvos" class=" col-4 table-responsive m-2">
+    </div>
+
+    <span><button id ="bshoot"  class="btn btn-danger" style="position:relative; top:10%;"  id="disparar" type="button" onclick="shoot()"> shoot </button></span>
+
+</div>
 
 
-<script src="js/jquery-3.3.1.min.js"></script>
-
+<!-- <script  src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
 <script src="dist/jquery-3.4.1.min.js"></script>
 <script src="dist/lodash.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script> -->
 <script src="dist/jquery-ui.min.js"></script>
 <script src="dist/gridstack.js"></script>
 <script src="dist/gridstack.jQueryUI.js"></script>
 <script src="dist/jquery.ui.touch-punch.min.js"></script>
-
 <script src="scripts/main.js"></script>
 <script src="./js/game.js"></script>
+
 </body>
 </html>

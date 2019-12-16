@@ -15,6 +15,21 @@ body {
 .salvo{
     background-color: crimson;
 }
+.carrier{
+background-color:green;
+}
+.patrol_boat{
+background-color:blue;
+}
+.destroyer{
+background-color:orange;
+}
+.battleship{
+background-color:brown;
+}
+.submarine{
+background-color:gray;
+}
 
 .cellBorder{
     border: solid 2px lightblue ;
@@ -30,6 +45,9 @@ body {
      display: none;
 }
 
+.yellow{
+background-color: yellow;
+}
 
 
 .wrap{

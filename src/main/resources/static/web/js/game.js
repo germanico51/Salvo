@@ -1,4 +1,6 @@
 
+
+var posiblesTiros = [];
 $(function () {
 
 loadData();
@@ -12,6 +14,8 @@ function getParameterByName(name) {
   var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
   return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
+var urlParams = new URLSearchParams(window.location.search);
+var gamePlayerId = Number(urlParams.get('gp'));
 
 function loadData() {
   $.get('/api/game_view/' + getParameterByName('gp'))
@@ -32,8 +36,11 @@ function loadData() {
               };
 
       data.ships.forEach(function (shipPiece) {
+        var tipoColor= shipPiece.type;
+
         shipPiece.shipLocations.forEach(function (shipLocation) {
-         $('#ships' + shipLocation.toLowerCase()).addClass('ship-piece');
+
+         $('#ships' + shipLocation.toLowerCase()).addClass(tipoColor);
 
         });
       });
@@ -45,8 +52,35 @@ function loadData() {
               $("#ships").hide();
               $("#salvos").hide();
               $("#gameBoard").hide();
+               $("#bshoot").hide();
+
             }
+                  const logueado = data.gamePlayers.filter(player => gamePlayerId === player.id)[0].player.id
+
+
+                  let salvosDisparados = data.salvoes.filter(jugador => (jugador.player === logueado))
+
+                  salvosDisparados.forEach(shoot => {
+
+                    shoot.salvoLocations.forEach(hit => {
+
+                      let shootLocation = $('#salvos' + hit.toLowerCase());
+
+                      shootLocation.addClass('hit-cell').append(shoot.turn);
+
+                      if (shootLocation.hasClass("ship-piece")) {
+                        console.log("hiteado");
+                        /* shootLocation.addClass('ship-piece-hited') */
+                      }
+
+                      console.log(shoot.turn);
+
+
+                    })
+                  })
+
     })
+
     .fail(function (jqXHR, textStatus) {
       alert('Failed: ' + textStatus);
     });
@@ -80,6 +114,26 @@ function drawTable(id) {
       cell.id = id + String.fromCharCode(i + 64).toLowerCase() + j;
 
       cell.classList.add("cellBorder");
+
+        if (id == "salvos") {
+              cell.addEventListener("click", function () {
+                let shot = this.id.slice(6).toLocaleUpperCase();
+
+                if (this.classList.contains("hit-cell")) {
+                  alert("ya has disparado acá")
+                }
+                if (!posiblesTiros.includes(shot) && !this.classList.contains("hit-cell")) {
+                  this.classList.add("yellow"),
+                    posiblesTiros.push(shot),
+                    console.log(posiblesTiros);
+                } else if (posiblesTiros.includes(shot)) {
+                  this.classList.remove("yellow");
+                  let i = posiblesTiros.indexOf(shot)
+                  posiblesTiros.splice(i, 1);
+                  console.log(posiblesTiros)
+                }
+              })
+            }
 
     }
 
@@ -138,3 +192,32 @@ function addShips() {
             console.log("ships no guardados: " + textStatus + " " + httpError);
         })
 }
+function shoot() {
+  shoots= posiblesTiros;
+  if (posiblesTiros.length != 5){
+    alert ("solo puedes hacer hasta 5 disparos, revisa tus posibles disparos")
+  } else {
+    console.log(getParameterByName('gp'));
+
+    $.post({
+      url: "/api/games/players/" + getParameterByName('gp') + "/salvoes",
+     data: JSON.stringify({
+       salvoLocations: shoots
+          }),
+      dataType: "text",
+      contentType: "application/json"
+    })
+    .done(function (response, status, jqXHR) {
+
+      alert("Shoots added: " + response);
+      location.reload();
+      posiblesTiros = [];
+      console.log("var posiblesTiros es: "+ posiblesTiros);
+
+    })
+    .fail(function (jqXHR, status, httpError) {
+      alert("Failed to add salvoes: " + status + " " + httpError);
+    })
+
+}}
+

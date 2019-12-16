@@ -210,10 +210,15 @@ public class SalvoController {
             return new ResponseEntity<>(makeMap("Error", "no hay barcos"), HttpStatus.UNAUTHORIZED);
         }else {
 
-            salvo.setTurn(gamePlayer.getSalvoes().size() + 1);
-            salvo.setGamePlayer(gamePlayer);
-            salvoRepository.save(salvo);
-            return new ResponseEntity<>(makeMap("ok", "Salvo Añadido"), HttpStatus.CREATED);
+            if (!turnHasSalvoes(salvo, gamePlayer.getSalvoes())) {
+                salvo.setTurn(gamePlayer.getSalvoes().size() + 1);
+                salvo.setGamePlayer(gamePlayer);
+                salvoRepository.save(salvo);
+                return new ResponseEntity<>(makeMap("ok", "Salvoes added"), HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(makeMap("error", "Player has fired salvoes in this turn"), HttpStatus.FORBIDDEN);
+            }
+
 
         }
 
@@ -221,6 +226,15 @@ public class SalvoController {
 
     }
 
+    private boolean turnHasSalvoes(Salvo newSalvo, Set<Salvo> playerSalvoes){
+        boolean hasSalvoes = false;
+        for (Salvo salvo: playerSalvoes) {
+            if(salvo.getTurn() == newSalvo.getTurn()){
+                hasSalvoes = true;
+            }
+        }
+        return hasSalvoes;
+    }
 
 
     private List<Map<String, Object>> getShipList(Set<Ship> ships) {
